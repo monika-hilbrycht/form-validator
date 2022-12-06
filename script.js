@@ -38,14 +38,31 @@ const checkForm = input => {
 
     if(input.value.length < min) {
         showError(input, `${input.previousElementSibling.innerText.slice(0, -1)} something must have min ${min} signs.`)
-    }
- }
+    };
+ };
 
  const checkPassword = (pass1, pass2) => {
     if(pass1.value !== pass2.value) {
         showError(pass2, `Passwords don't match.`)
-    }
- }
+    };
+ };
+
+ const checkErrors = () => {
+
+    const allInputs = document.querySelectorAll('.form-box');
+    let errorCount = 0;
+
+    allInputs.forEach(el => {
+        if(el.classList.contains('error')) {
+            errorCount++;
+        };
+    });
+
+    if(errorCount === 0) {
+        popup.classList.add('show-popup')
+    };
+
+ };
 
 
 sendBtn.addEventListener('click', e => {
@@ -55,13 +72,15 @@ sendBtn.addEventListener('click', e => {
     checkLength(username, 3);
     checkLength(pass, 8);
     checkPassword(pass, pass2);
+    checkErrors();
 
-})
+});
 
 clearBtn.addEventListener('click', e => {
     e.preventDefault()
 
     [username, pass, pass2, email].forEach(el => {
-        el.value = ''
-    })
-})
+        el.value = '';
+        clearError(el)
+    });
+});
